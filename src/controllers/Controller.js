@@ -9,7 +9,7 @@ class Controller {
         await this.entidadeService.buscaTodosOsRegistros();
       return res.status(200).json(listaDeRegistros);
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
 
@@ -19,7 +19,7 @@ class Controller {
       const registro = await this.entidadeService.buscaPorId(Number(id));
       return res.status(200).json(registro);
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
 
@@ -31,7 +31,7 @@ class Controller {
       );
       return res.status(201).json(registroCriado);
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
 
@@ -53,7 +53,7 @@ class Controller {
           .json({ mensagem: `registro ${id} atualizado com sucesso` });
       }
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
 
@@ -65,7 +65,7 @@ class Controller {
         .status(200)
         .json({ mensagem: `id ${id} deletado com sucesso` });
     } catch (erro) {
-      //erro
+      return res.status(500).json({ erro: erro.message });
     }
   }
 }

@@ -10,7 +10,9 @@ const router = Router();
 router.get('/pessoas', (req, res) =>
   pessoaController.buscaTodosOsRegistros(req, res)
 );
-
+router.get('/pessoas/todas', (req, res) =>
+  pessoaController.buscaTodasAsPessoas(req, res)
+);
 router.get('/pessoas/:id', (req, res) => pessoaController.buscaPorId(req, res));
 router.post('/pessoas', (req, res) => pessoaController.criaNovo(req, res));
 router.put('/pessoas/:id', (req, res) =>

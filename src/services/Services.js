@@ -1,4 +1,4 @@
-const dataSource = require('../models');
+const dataSource = require('../database/models');
 
 class Services {
   constructor(nomeDoModel) {
@@ -7,6 +7,10 @@ class Services {
 
   async buscaTodosOsRegistros() {
     return await dataSource[this.model].findAll();
+  }
+
+  async buscaRegistrosPorEscopo(escopo) {
+    return await dataSource[this.model].scope(escopo).findAll();
   }
 
   async buscaPorId(id) {
