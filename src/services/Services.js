@@ -21,14 +21,21 @@ class Services {
     return await dataSource[this.model].findOne({ where: { ...where } });
   }
 
+  async buscaEContaRegistros(options) {
+    return await dataSource[this.model].findAndCountAll({ ...options });
+  }
+
   async criaNovo(dadosParaCriacao) {
     return await dataSource[this.model].create(dadosParaCriacao);
   }
 
-  async atualizaRegistro(dadosAtualizados, where) {
+  async atualizaRegistro(dadosAtualizados, where, transacao = {}) {
     const listaDeRegistrosAtualizados = await dataSource[this.model].update(
       dadosAtualizados,
-      { where: { ...where } }
+      {
+        where: { ...where },
+        transaction: transacao,
+      }
     );
     return listaDeRegistrosAtualizados[0] > 0;
   }
