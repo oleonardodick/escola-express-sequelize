@@ -5,8 +5,8 @@ class Services {
     this.model = nomeDoModel;
   }
 
-  async buscaTodosOsRegistros() {
-    return await dataSource[this.model].findAll();
+  async buscaTodosOsRegistros(where = {}) {
+    return await dataSource[this.model].findAll({ where: { ...where } });
   }
 
   async buscaRegistrosPorEscopo(escopo) {
@@ -17,20 +17,24 @@ class Services {
     return await dataSource[this.model].findByPk(id);
   }
 
+  async buscaRegistro(where) {
+    return await dataSource[this.model].findOne({ where: { ...where } });
+  }
+
   async criaNovo(dadosParaCriacao) {
     return await dataSource[this.model].create(dadosParaCriacao);
   }
 
-  async atualizaRegistro(dadosAtualizados, id) {
+  async atualizaRegistro(dadosAtualizados, where) {
     const listaDeRegistrosAtualizados = await dataSource[this.model].update(
       dadosAtualizados,
-      { where: { id: id } }
+      { where: { ...where } }
     );
     return listaDeRegistrosAtualizados[0] > 0;
   }
 
-  async excluiRegistro(id) {
-    return await dataSource[this.model].destroy({ where: { id: id } });
+  async excluiRegistro(where) {
+    return await dataSource[this.model].destroy({ where: { ...where } });
   }
 }
 
