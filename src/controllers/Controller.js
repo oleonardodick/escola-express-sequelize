@@ -38,13 +38,19 @@ class Controller {
 
   async criaNovo(req, res) {
     const dadosParaCriacao = req.body;
+    const requisicaoVazia = Object.keys(dadosParaCriacao).length === 0;
     try {
+      if (requisicaoVazia) {
+        throw new Error('Corpo da requisição vazio');
+      }
       const registroCriado = await this.entidadeService.criaNovo(
         dadosParaCriacao
       );
       return res.status(201).json(registroCriado);
     } catch (erro) {
-      return res.status(500).json({ erro: erro.message });
+      return res
+        .status(requisicaoVazia ? 400 : 500)
+        .json({ erro: erro.message });
     }
   }
 
@@ -60,13 +66,14 @@ class Controller {
       if (!foiAtualizado) {
         return res
           .status(400)
-          .json({ mensagem: `registro ${id} não foi atualizado` });
+          .json({ mensagem: 'registro não foi atualizado' });
       } else {
         return res
           .status(200)
-          .json({ mensagem: `registro ${id} atualizado com sucesso` });
+          .json({ mensagem: 'registro atualizado com sucesso' });
       }
     } catch (erro) {
+      console.log(erro);
       return res.status(500).json({ erro: erro.message });
     }
   }
@@ -78,7 +85,7 @@ class Controller {
       await this.entidadeService.excluiRegistro(where);
       return res
         .status(200)
-        .json({ mensagem: `id ${id} deletado com sucesso` });
+        .json({ mensagem: 'registro deletado com sucesso' });
     } catch (erro) {
       return res.status(500).json({ erro: erro.message });
     }

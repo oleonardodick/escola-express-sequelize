@@ -29,13 +29,17 @@ class Services {
     return await dataSource[this.model].create(dadosParaCriacao);
   }
 
-  async atualizaRegistro(dadosAtualizados, where, transacao = {}) {
+  async atualizaRegistro(dadosAtualizados, where, transacao = null) {
+    const options = {
+      where: { ...where },
+    };
+    if (transacao) {
+      options.transacao = transacao;
+    }
+    console.log(options);
     const listaDeRegistrosAtualizados = await dataSource[this.model].update(
       dadosAtualizados,
-      {
-        where: { ...where },
-        transaction: transacao,
-      }
+      options
     );
     return listaDeRegistrosAtualizados[0] > 0;
   }
